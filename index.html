@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Keynine Studios</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #000;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 0 50px;
+  }
+
+  .panel {
+    flex: 1;
+    height: 100%;
+    position: relative;
+    clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    overflow: hidden;
+    color: white;
+    transition: transform 0.4s ease;
+  }
+
+  .panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: transparent;
+    transition: all 0.4s ease;
+    z-index: 1;
+    filter: blur(40px);
+  }
+
+  .panel img,
+  .panel h2,
+  .panel p {
+    position: relative;
+    z-index: 2;
+  }
+
+  .panel img { width: 80px; margin-bottom: 20px; }
+  .panel h2 { font-size: 2rem; margin-bottom: 10px; }
+  .panel p { font-size: 1rem; max-width: 250px; line-height: 1.3; opacity: 0.85; }
+
+  .panel a {
+    color: inherit;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Neon glowy backgrounds on hover */
+  .top10:hover::before {
+    background: linear-gradient(135deg, rgba(160,32,240,0.6), rgba(128,0,255,0.6));
+    box-shadow:
+      0 0 30px #a020f0,
+      0 0 60px #a020f0,
+      0 0 90px #a020f0;
+  }
+
+  .support:hover::before {
+    background: linear-gradient(135deg, rgba(0,200,255,0.6), rgba(0,150,255,0.6));
+    box-shadow:
+      0 0 30px #00c8ff,
+      0 0 60px #00c8ff,
+      0 0 90px #00c8ff;
+  }
+
+  .coming:hover::before {
+    background: linear-gradient(135deg, rgba(0,255,128,0.6), rgba(0,200,100,0.6));
+    box-shadow:
+      0 0 30px #00ff80,
+      0 0 60px #00ff80,
+      0 0 90px #00ff80;
+  }
+
+  .panel:hover {
+    transform: scale(1.02);
+  }
+
+  @media (max-width: 900px) {
+    .container { flex-direction: column; padding: 0 20px; gap: 20px; }
+    .panel { clip-path: polygon(5% 0, 95% 0, 100% 100%, 0 100%); width: 100%; height: 200px; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="panel top10">
+      <a href="https://topten.keyninestudios.com">
+        <img src="top10-logo.png" alt="Top 10 Logo">
+        <h2>Top 10!</h2>
+        <p>Discover the world with challenges, checklists, and digital passports.</p>
+      </a>
+    </div>
+
+    <div class="panel support">
+      <a href="https://getsupport.keyninestudios.com">
+        <img src="support-logo.png" alt="Support Logo">
+        <h2>Product Support</h2>
+        <p>Help with Keynine Studios apps and services.</p>
+      </a>
+    </div>
+
+    <div class="panel coming">
+      <a href="#">
+        <img src="coming-soon-logo.png" alt="Coming Soon Logo">
+        <h2>NEW APP</h2>
+        <p>Coming soon. Stay tuned for more info.</p>
+      </a>
+    </div>
+  </div>
+</body>
+</html>
