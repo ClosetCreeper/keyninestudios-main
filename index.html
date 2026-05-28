@@ -4,34 +4,60 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Keynine Studios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --purple: #b44dff;
+    --cyan: #00d4ff;
+    --green: #00ffaa;
+  }
 
   body {
-    background: #000;
-    font-family: Arial, sans-serif;
+    background: #050508;
+    font-family: 'DM Sans', sans-serif;
     height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     overflow: hidden;
   }
 
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.6;
+  }
+
+  .wordmark {
+    margin-bottom: 48px;
+    animation: fadeUp 0.8s ease both;
+  }
+  .wordmark img {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+  }
+
   .container {
     display: flex;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    padding: 0 50px;
+    width: min(100vw, 1100px);
+    height: min(72vh, 500px);
+    padding: 0 40px;
+    animation: fadeUp 0.8s 0.15s ease both;
   }
 
   .panel {
     flex: 1;
-    height: 100%;
     position: relative;
-    clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+    clip-path: polygon(8% 0%, 100% 0%, 92% 100%, 0% 100%);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -39,102 +65,218 @@
     cursor: pointer;
     overflow: hidden;
     color: white;
-    transition: transform 0.4s ease;
+    margin: 0 -14px;
+    transition: flex 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    background: #0d0d14;
   }
+
+  .panel:first-child { clip-path: polygon(0% 0%, 100% 0%, 92% 100%, 0% 100%); margin-left: 0; }
+  .panel:last-child  { clip-path: polygon(8% 0%, 100% 0%, 100% 100%, 0% 100%); margin-right: 0; }
 
   .panel::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: transparent;
-    transition: all 0.4s ease;
-    z-index: 1;
-    filter: blur(40px);
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    z-index: 0;
   }
 
-  .panel img,
-  .panel h2,
-  .panel p {
-    position: relative;
-    z-index: 2;
+  .panel::after {
+    content: '';
+    position: absolute;
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0;
+    transition: opacity 0.45s ease, transform 0.45s ease;
+    z-index: 0;
   }
 
-  .panel img { width: 80px; margin-bottom: 20px; }
-  .panel h2 { font-size: 2rem; margin-bottom: 10px; }
-  .panel p { font-size: 1rem; max-width: 250px; line-height: 1.3; opacity: 0.85; }
+  .panel:hover { flex: 1.55; }
+  .panel:hover::before { opacity: 1; }
+  .panel:hover::after  { opacity: 0.55; transform: scale(1.15); }
+
+  .panel .edge-line {
+    position: absolute;
+    top: 0; left: 8%; right: 0;
+    height: 2px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 3;
+  }
+  .panel:first-child .edge-line { left: 0; }
+  .panel:last-child  .edge-line { right: 0; }
+  .panel:hover .edge-line { opacity: 1; }
 
   .panel a {
-    color: inherit;
-    text-decoration: none;
-    display: block;
-    width: 100%;
-    height: 100%;
+    position: relative;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    padding: 32px;
   }
 
-  /* Neon glowy backgrounds on hover */
-  .top10:hover::before {
-    background: linear-gradient(135deg, rgba(160,32,240,0.6), rgba(128,0,255,0.6));
-    box-shadow:
-      0 0 30px #a020f0,
-      0 0 60px #a020f0,
-      0 0 90px #a020f0;
+  .icon-wrap {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 22px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: background 0.4s ease, border-color 0.4s ease, transform 0.4s ease;
+  }
+  .panel:hover .icon-wrap {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.18);
+    transform: translateY(-4px);
   }
 
-  .support:hover::before {
-    background: linear-gradient(135deg, rgba(0,200,255,0.6), rgba(0,150,255,0.6));
-    box-shadow:
-      0 0 30px #00c8ff,
-      0 0 60px #00c8ff,
-      0 0 90px #00c8ff;
+  .icon-wrap img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
   }
 
-  .coming:hover::before {
-    background: linear-gradient(135deg, rgba(0,255,128,0.6), rgba(0,200,100,0.6));
-    box-shadow:
-      0 0 30px #00ff80,
-      0 0 60px #00ff80,
-      0 0 90px #00ff80;
+  .panel h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.45rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+    transition: transform 0.4s ease;
+  }
+  .panel:hover h2 { transform: translateY(-2px); }
+
+  .panel p {
+    font-size: 0.85rem;
+    font-weight: 300;
+    line-height: 1.55;
+    max-width: 200px;
+    color: rgba(255,255,255,0.55);
+    transition: color 0.4s ease;
+  }
+  .panel:hover p { color: rgba(255,255,255,0.75); }
+
+  .panel-divider {
+    position: absolute;
+    top: 0; bottom: 0;
+    right: -14px;
+    width: 1px;
+    background: rgba(255,255,255,0.06);
+    z-index: 5;
+    pointer-events: none;
   }
 
-  .panel:hover {
-    transform: scale(1.02);
+  /* Per-panel theming */
+  .top10::before   { background: linear-gradient(160deg, rgba(180,77,255,0.18), rgba(100,0,200,0.1)); }
+  .top10::after    { background: var(--purple); top: 30%; left: 20%; }
+  .top10 .edge-line { background: linear-gradient(90deg, var(--purple), transparent); }
+  .top10:hover h2  { color: #d88fff; }
+
+  .support::before  { background: linear-gradient(160deg, rgba(0,212,255,0.15), rgba(0,80,160,0.1)); }
+  .support::after   { background: var(--cyan); top: 30%; left: 20%; }
+  .support .edge-line { background: linear-gradient(90deg, var(--cyan), transparent); }
+  .support:hover h2 { color: #66e8ff; }
+
+  .coming::before  { background: linear-gradient(160deg, rgba(0,255,170,0.15), rgba(0,120,80,0.1)); }
+  .coming::after   { background: var(--green); top: 30%; left: 20%; }
+  .coming .edge-line { background: linear-gradient(90deg, var(--green), transparent); }
+  .coming:hover h2 { color: #66ffcc; }
+
+  .badge {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: rgba(0,255,170,0.1);
+    border: 1px solid rgba(0,255,170,0.25);
+    color: var(--green);
   }
 
-  @media (max-width: 900px) {
-    .container { flex-direction: column; padding: 0 20px; gap: 20px; }
-    .panel { clip-path: polygon(5% 0, 95% 0, 100% 100%, 0 100%); width: 100%; height: 200px; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 700px) {
+    .container {
+      flex-direction: column;
+      height: auto;
+      padding: 0 20px;
+      gap: 12px;
+    }
+    .panel {
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%) !important;
+      margin: 0 !important;
+      height: 160px;
+      transition: none;
+    }
+    .panel:hover { flex: 1; }
+    .wordmark { margin-bottom: 28px; }
+    .panel h2 { font-size: 1.2rem; }
   }
 </style>
 </head>
 <body>
+
+  <div class="wordmark">
+    <img src="logokey.png" alt="Keynine Studios">
+  </div>
+
   <div class="container">
+
     <div class="panel top10">
+      <div class="edge-line"></div>
       <a href="https://topten.keyninestudios.com">
-        <img src="top10-logo.png" alt="Top 10 Logo">
+        <div class="icon-wrap">
+          <img src="top10-logo.png" alt="Top 10 Logo">
+        </div>
         <h2>Top 10!</h2>
-        <p>Discover the world with challenges, checklists, and digital passports.</p>
+        <p>Challenges, checklists & digital passports to explore the world.</p>
       </a>
+      <div class="panel-divider"></div>
     </div>
 
     <div class="panel support">
+      <div class="edge-line"></div>
       <a href="https://getsupport.keyninestudios.com">
-        <img src="support-logo.png" alt="Support Logo">
-        <h2>Product Support</h2>
-        <p>Help with Keynine Studios apps and services.</p>
+        <div class="icon-wrap">
+          <img src="support-logo.png" alt="Support Logo">
+        </div>
+        <h2>Support</h2>
+        <p>Help with all Keynine Studios apps and services.</p>
       </a>
+      <div class="panel-divider"></div>
     </div>
 
     <div class="panel coming">
+      <div class="edge-line"></div>
       <a href="#">
-        <img src="coming-soon-logo.png" alt="Coming Soon Logo">
-        <h2>NEW APP</h2>
-        <p>Coming soon. Stay tuned for more info.</p>
+        <div class="icon-wrap">
+          <img src="coming-soon-logo.png" alt="Coming Soon Logo">
+        </div>
+        <h2>New App</h2>
+        <p>Something new is coming. Stay tuned for more.</p>
+        <span class="badge">Coming Soon</span>
       </a>
     </div>
+
   </div>
+
 </body>
 </html>
